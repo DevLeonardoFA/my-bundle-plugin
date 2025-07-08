@@ -1,0 +1,27 @@
+div#bundle-steps .step {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  border: 1px solid #000;
+  margin-bottom: 25px;
+  border-radius: 7px;
+}
+div#bundle-steps .step input, div#bundle-steps .step select {
+  margin-bottom: 15px;
+}
+div#bundle-steps .button {
+  cursor: pointer;
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  box-sizing: border-box;
+  border-radius: 7px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px;
+}
+
+/*# sourceMappingURL=BackEndStyle.css.map */
