@@ -1,6 +1,6 @@
 jQuery().ready(($) => {
    
-    AjaxUrl = wc_bundle_ajax2.ajax_url;
+    AjaxUrl = AjaxSentToCart_URL.ajax_url;
 
     let selectedProducts = [];
 
@@ -55,7 +55,7 @@ jQuery().ready(($) => {
             data: {
                 action: 'add_bundle_to_cart',
                 products: selectedProducts,
-                nonce: wc_bundle_ajax2.nonce
+                nonce: AjaxSentToCart_URL.nonce
             },
             success: function(response) {
                 window.location.href = response.data.cart_url;

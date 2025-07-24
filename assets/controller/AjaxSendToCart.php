@@ -9,9 +9,9 @@ add_action('wp_enqueue_scripts', function () {
         'nonce' => wp_create_nonce('mbp-nonce'),
     ];
 
-    wp_register_script('wc_bundle_ajax', plugin_dir_url(__FILE__) . '/AjaxSendToCart.js', ['jquery'], '1.0.0', true);
-    wp_localize_script('wc_bundle_ajax', 'wc_bundle_ajax2', $args);
-    wp_enqueue_script('wc_bundle_ajax');
+    wp_register_script('AjaxSentToCart_Script', plugin_dir_url(__FILE__) . '/AjaxSendToCart.js', ['jquery'], '1.0.0', true);
+    wp_localize_script('AjaxSentToCart_Script', 'AjaxSentToCart_URL', $args);
+    wp_enqueue_script('AjaxSentToCart_Script');
 });
 add_action('wp_ajax_add_bundle_to_cart', 'add_bundle_to_cart');
 add_action('wp_ajax_nopriv_add_bundle_to_cart', 'add_bundle_to_cart');

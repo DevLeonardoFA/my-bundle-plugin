@@ -36,7 +36,6 @@ function create_placeholder_product() {
 
     return $product->get_id();
 
-
 }
 
 function delete_placeholder_product() {

@@ -6,29 +6,40 @@ class My_Bundle_Plugin {
         
         // 1. CPT for Bundles
         add_action('init', [$this, 'my_wc_bundle_cpt']);
-        // add_action('init', [$this, 'create_placeholder_product']);
 
         // 2. Metabox for bundle steps
         add_action('add_meta_boxes', [$this, 'my_wc_bundle_metabox']);
 
         // 3. Save metabox
-        add_action('save_post_wc_bundle', function($post_id) {
-            if (isset($_POST['steps'])) {
-                update_post_meta($post_id, '_wc_bundle_steps', $_POST['steps']);
-            }
-        });
+        add_action('save_post_wc_bundle', [$this, 'save_bundle_steps']);
+
+        // 4. Add Shortcode Column
+        add_filter('manage_wc_bundle_posts_columns', [$this, 'add_shortcode_column_to_bundles']);
+
+        // 5. Add Shortcode
+        add_action('manage_wc_bundle_posts_custom_column', [$this, 'fill_shortcode_column_in_bundles'], 10, 2);
+
+        // 6. Deactivate my plugin if WooCommerce is deactivated
+        add_action('deactivated_plugin', [$this, 'meu_plugin_woocommerce_desativado']);
+
+        // 7. Tutorial
+        add_action('admin_menu', [$this, 'add_tutorial_submenu'], 0);
+
 
     }
 
     public function my_wc_bundle_cpt() {
         
-        register_post_type('wc_bundle', [
-            'label' => 'Bundles',
-            'public' => false,
-            'show_ui' => true,
-            'supports' => ['title'],
-            'menu_icon' => 'dashicons-cart',
-        ]);
+        register_post_type(
+            'wc_bundle', 
+            [
+                'label' => __('Bundles', 'my-bundle-plugin'),
+                'public' => false,
+                'show_ui' => true,
+                'supports' => ['title'],
+                'menu_icon' => 'dashicons-cart',
+            ]
+        );
 
     }
 
@@ -81,6 +92,67 @@ class My_Bundle_Plugin {
         <button type="button" id="add-step" class="button">+ Add New Stage</button>
         <?php
     }
+
+    function save_bundle_steps($post_id) {
+        if (isset($_POST['steps'])) {
+            update_post_meta($post_id, '_wc_bundle_steps', $_POST['steps']);
+        }
+    }
+
+    // Add Shortcode Column to Each Bundle
+    function add_shortcode_column_to_bundles($columns) {
+        $new_columns = [];
+
+        foreach ($columns as $key => $value) {
+            $new_columns[$key] = $value;
+
+            if ($key === 'title') {
+                $new_columns['shortcode'] = 'Shortcode';
+            }
+        }
+
+        return $new_columns;
+    }
+    
+    // Add Shortcode inside the column
+    function fill_shortcode_column_in_bundles($column, $post_id) {
+        if ($column === 'shortcode') {
+            echo '[my_wc_bundle id="' . $post_id . '"]';
+        }
+    }
+
+    // Deactivate my plugin if WooCommerce is deactivated
+    function meu_plugin_woocommerce_desativado($plugin) {
+        if ($plugin === 'woocommerce/woocommerce.php') {
+            deactivate_plugins(plugin_basename(__FILE__));
+            add_action('admin_notices', function () {
+                echo '<div class="notice notice-error"><p>WooCommerce foi desativado, então o plugin "Meu Plugin" também foi desativado automaticamente.</p></div>';
+            });
+        }
+    }
+
+
+    public function add_tutorial_submenu() {
+        add_submenu_page(
+            'edit.php?post_type=wc_bundle',
+            'Tutorial',
+            'Tutorial',
+            'manage_options',
+            'bundles_tutorial',
+            [$this, 'render_tutorial_page'],
+            1
+        );
+    }
+
+    function render_tutorial_page() {
+
+        require_once __DIR__ . '/TutorialPage.php';
+
+        do_action('my_bundle_plugin_tutorial');
+
+    }
+
+
 
 }
 new My_Bundle_Plugin();

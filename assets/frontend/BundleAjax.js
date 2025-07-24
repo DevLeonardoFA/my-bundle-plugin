@@ -1,7 +1,7 @@
 jQuery().ready(($) => {
 
     const wizard = $('.wc-bundle-wizard');
-    const AjaxUrl = wc_bundle_ajax.ajax_url;
+    const AjaxUrl = Bundle_URL.ajax_url;
     if (!wizard.length) return;
 
     $(wizard).removeClass('loading');
@@ -87,8 +87,6 @@ jQuery().ready(($) => {
         $(progressbar).find('.line').css('background-position', `${progressbartotal - toRemove}% 0%`);
 
 
-        console.log(prevIndex_value);
-
         dots.find('.dot').eq(prevIndex_value).removeClass('active');
 
 
@@ -116,7 +114,7 @@ jQuery().ready(($) => {
             url: AjaxUrl,
             type: 'POST',
             data: {
-                action: 'wc_bundle_load_products',
+                action: 'LoadProducts_FrontEnd',
                 step_slug: stepSlug,
                 bundle_id: bundleId,
                 lwh: lwh,

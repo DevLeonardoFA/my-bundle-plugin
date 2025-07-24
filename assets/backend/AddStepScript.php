@@ -1,6 +1,6 @@
 <?php
 
-// Registrar endpoint AJAX
+// Register endpoint AJAX
 add_action('admin_enqueue_scripts', function () {
     $base_url = admin_url('admin-ajax.php');
 
@@ -8,14 +8,13 @@ add_action('admin_enqueue_scripts', function () {
         'ajax_url' => $base_url,
     ];
 
-    wp_register_script('AddStepScript', plugin_dir_url(__FILE__) . 'AddStepScript.js', ['jquery'], '1.0.0', true);
-    wp_localize_script('AddStepScript', 'wc_addstep_ajax', $args);
-    wp_enqueue_script('AddStepScript');
+    wp_register_script('AddStep_Script', plugin_dir_url(__FILE__) . 'AddStepScript.js', ['jquery'], '1.0.0', true);
+    wp_localize_script('AddStep_Script', 'AddStep_URL', $args);
+    wp_enqueue_script('AddStep_Script');
 });
 
 add_action('wp_ajax_add_step_script', 'add_step_script');
 add_action('wp_ajax_nopriv_add_step_script', 'add_step_script');
-
 
 function add_step_script() {
 

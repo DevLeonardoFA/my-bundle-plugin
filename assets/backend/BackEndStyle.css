@@ -1,3 +1,12 @@
+/*
+*   sass --watch assets/backend/BackEndStyle.scss assets/backend/BackEndStyle.css
+*/
+div#bundle-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  box-sizing: border-box;
+  grid-gap: 20px;
+}
 div#bundle-steps .step {
   padding: 20px 15px;
   display: flex;
@@ -5,7 +14,6 @@ div#bundle-steps .step {
   justify-content: left;
   align-items: flex-start;
   border: 1px solid #000;
-  margin-bottom: 25px;
   border-radius: 7px;
 }
 div#bundle-steps .step input, div#bundle-steps .step select {
@@ -22,6 +30,46 @@ div#bundle-steps .button {
   background-color: #ffffff;
   color: #000000;
   padding: 5px;
+}
+
+button#add-step {
+  cursor: pointer;
+  height: auto;
+  box-sizing: border-box;
+  border-radius: 7px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px 15px;
+  margin-top: 20px;
+  transition: all 0.3s ease-in-out;
+}
+button#add-step:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.tutorial {
+  font-family: sans-serif;
+  max-width: 800px;
+}
+.tutorial .tutorial-steps {
+  display: grid;
+  gap: 16px;
+}
+.tutorial .step-box {
+  background: #fff;
+  border-left: 4px solid #007cba;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+.tutorial .step-title {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.tutorial .step-desc {
+  color: #555;
 }
 
 /*# sourceMappingURL=BackEndStyle.css.map */
