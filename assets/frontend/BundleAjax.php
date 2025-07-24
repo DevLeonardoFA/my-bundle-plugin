@@ -48,8 +48,6 @@ function LoadProducts_FrontEnd() {
 
         $lwh = $_POST['lwh'];
 
-        // WOOCOMMERCE SHIPING DIMENSIONS
-
         $args['meta_query'] = [
             [
                 'key' => '_length',
@@ -79,34 +77,32 @@ function LoadProducts_FrontEnd() {
 
         echo '<ul class="products-list">';
         while ($products->have_posts()) {
+
             $products->the_post();
             global $product;
 
-            // get woocommerce shiping dimensions
-            // $product = wc_get_product(get_the_ID());
             $length = $product->get_length() ?? 0;
             $largura = $product->get_width() ?? 0;
             $altura = $product->get_height() ?? 0;
 
 
-            ?>
+            if( $product->is_type('simple') ){
 
-                <li class="product-item" data-product-length="<?= $length ?>" data-product-width="<?= $largura ?>" data-product-height="<?= $altura ?>">
-                    <a href="<?= get_the_permalink() ?>">
-                        <img 
-                        src="<?= get_the_post_thumbnail_url() ?>" 
-                        alt="<?= get_the_title() ?>" 
-                        width="150">
-                    </a>
-                    <h4>
-                        <a href="<?= get_the_permalink() ?>">
-                            <?= get_the_title() ?>
-                        </a>
-                    </h4>
-                    <button class="addtobundle button" data-product-id="<?= $product->get_id() ?>" ><?= __('Add to Bundle', 'wc-bundle'); ?></button>
-                </li>
-                        
-            <?php
+                include dirname(__DIR__, 1) . '/template-parts/product-item.php';
+                            
+            }elseif( $product->is_type('variable') ){
+                
+                $variations = $product->get_children();
+                foreach ($variations as $variation) {
+                    $variation_product = wc_get_product($variation);
+                    $length = $variation_product->get_length() ?? 0;
+                    $largura = $variation_product->get_width() ?? 0;
+                    $altura = $variation_product->get_height() ?? 0;
+
+                    include dirname(__DIR__, 1) . '/template-parts/product-item.php';
+                }
+            }
+
 
 
         }

@@ -28,6 +28,7 @@ add_shortcode('my_wc_bundle', function($atts) {
 
         <div class="wc-bundle-steps">
             <?php 
+
             $first = true;
             $s_a = 0;
 
