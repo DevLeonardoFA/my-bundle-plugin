@@ -7,7 +7,8 @@ add_shortcode('my_wc_bundle', function($atts) {
 
     $bundle_id = $atts['id'];
     $steps = get_post_meta($bundle_id, '_wc_bundle_steps', true);
-    
+
+
     if (empty($steps)) return 
         __('This bundle has no steps', 'wc-bundle');
 
@@ -32,8 +33,13 @@ add_shortcode('my_wc_bundle', function($atts) {
             $first = true;
             $s_a = 0;
 
-            foreach ($steps as $i => $step) : ?>
-                <div class="step" data-title="<?= esc_attr($step['title']) ?>" data-step-index="<?= $i ?>" <?= $first ? '' : 'style="display:none;"' ?>>
+            foreach ($steps as $i => $step) : 
+            
+                $optional = $step['optional'] == 1 ? "data-optional='true'" : false;
+            
+            
+            ?>
+                <div class="step" <?= $optional; ?> data-title="<?= esc_attr($step['title']) ?>" data-step-index="<?= $i ?>" <?= $first ? '' : 'style="display:none;"' ?>>
                     
                     <h2><?= esc_html($step['title']) ?></h2>
 
@@ -57,39 +63,11 @@ add_shortcode('my_wc_bundle', function($atts) {
                                     ]
                                 ];
 
-
-
-
-
                                 $products = new WP_Query($args);
                                 if ($products->have_posts()) :
                                     while ($products->have_posts()) : $products->the_post();
 
-                                        // get woocommerce shiping dimensions
-                                        $product = wc_get_product(get_the_ID());
-                                        $length = $product->get_length() ?? 0;
-                                        $largura = $product->get_width() ?? 0;
-                                        $altura = $product->get_height() ?? 0;
-
-
-                                        ?>
-
-                                        <li class="product-item" rules="<?= $rules ?>" data-product-length="<?= $length ?>" data-product-width="<?= $largura ?>" data-product-height="<?= $altura ?>">
-                                            <a href="<?= get_the_permalink() ?>">
-                                                <img 
-                                                src="<?= get_the_post_thumbnail_url() ?>" 
-                                                alt="<?= get_the_title() ?>" 
-                                                width="150">
-                                            </a>
-                                            <h4>
-                                                <a href="<?= get_the_permalink() ?>">
-                                                    <?= get_the_title() ?>
-                                                </a>
-                                            </h4>
-                                            <button class="addtobundle button" data-product-id="<?= get_the_ID() ?>"><?= __('Add to Bundle', 'wc-bundle') ?></button>
-                                        </li>
-
-                                        <?php
+                                        $item = new wc_bundle_product_item_html( get_the_ID() );
 
                                     endwhile;
                                 endif;

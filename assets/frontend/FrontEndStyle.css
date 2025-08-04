@@ -2,6 +2,10 @@
     scss terminal code
     scss --watch assets/frontend/FrontEndStyle.scss assets/frontend/FrontEndStyle.css
 */
+.wc-bundle-wizard {
+  max-width: 1000px;
+  width: 100%;
+}
 .wc-bundle-wizard .button {
   cursor: pointer;
   width: 100%;
@@ -72,14 +76,51 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   box-sizing: border-box;
   margin-bottom: 35px;
 }
+.wc-bundle-wizard .step ul li {
+  border: 1px solid #000000;
+  border-radius: 7px;
+  overflow: hidden;
+}
 .wc-bundle-wizard .step ul li img {
   aspect-ratio: 1/1;
   object-fit: cover;
+  width: 100%;
+}
+.wc-bundle-wizard .step ul li .content {
+  box-sizing: border-box;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: 25px 35px 35px 40px;
+}
+.wc-bundle-wizard .step ul li .content h4 {
+  grid-row: 1;
+  margin: 0px;
+}
+.wc-bundle-wizard .step ul li .content h4 a {
+  text-decoration: none;
+  color: #000000;
+}
+.wc-bundle-wizard .step ul li .content span.attributes {
+  grid-row: 2;
+  font-size: 15px;
+  line-height: 1;
+  margin: 0;
+  display: block;
+  box-sizing: border-box;
+}
+.wc-bundle-wizard .step ul li .content span.price {
+  grid-row: 3;
+}
+.wc-bundle-wizard .step ul li .content button.addtobundle {
+  grid-row: 4;
+}
+.wc-bundle-wizard .step ul li .content button.addtobundle:focus, .wc-bundle-wizard .step ul li .content button.addtobundle:active {
+  border: 1px;
 }
 .wc-bundle-wizard .step .step-actions {
   display: flex;
@@ -121,6 +162,9 @@
 }
 
 @media screen and (min-width: 0px) and (max-width: 768px) {
+  .wc-bundle-wizard {
+    max-width: 90%;
+  }
   .wc-bundle-wizard .step ul {
     grid-template-columns: repeat(2, 1fr);
   }

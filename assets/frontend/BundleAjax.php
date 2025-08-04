@@ -26,7 +26,7 @@ function LoadProducts_FrontEnd() {
     $steps = get_post_meta($bundle_id, '_wc_bundle_steps', true);
     $category_id = $steps[$step_index]['category'];
     $rules = $steps[$step_index]['rules'];
-    
+    $optional = $steps[$step_index]['optional'];  
     
     $args = [
         'post_type' => 'product',
@@ -39,9 +39,6 @@ function LoadProducts_FrontEnd() {
             ]
         ]
     ];
-
-
-    // do_action('LoadProducts_CustomRules', $rules, $args, $step_index);
 
 
     if($rules != 'NA'){
@@ -75,35 +72,27 @@ function LoadProducts_FrontEnd() {
     $products = new WP_Query($args);
     if ($products->have_posts()) {
 
-        echo '<ul class="products-list">';
+        echo '<ul class="products-list" ' . ($optional == 1 ? 'data-optional="true"' : '') . '>';
         while ($products->have_posts()) {
 
             $products->the_post();
             global $product;
 
-            $length = $product->get_length() ?? 0;
-            $largura = $product->get_width() ?? 0;
-            $altura = $product->get_height() ?? 0;
-
-
             if( $product->is_type('simple') ){
 
-                include dirname(__DIR__, 1) . '/template-parts/product-item.php';
+                $item = new wc_bundle_product_item_html($product->get_id());
                             
             }elseif( $product->is_type('variable') ){
                 
                 $variations = $product->get_children();
-                foreach ($variations as $variation) {
-                    $variation_product = wc_get_product($variation);
-                    $length = $variation_product->get_length() ?? 0;
-                    $largura = $variation_product->get_width() ?? 0;
-                    $altura = $variation_product->get_height() ?? 0;
+                foreach ($variations as $variation) { 
 
-                    include dirname(__DIR__, 1) . '/template-parts/product-item.php';
+                    $item = new wc_bundle_product_item_html($variation);
+                    
                 }
+
+
             }
-
-
 
         }
         echo '</ul>';

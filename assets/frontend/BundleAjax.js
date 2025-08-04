@@ -8,6 +8,7 @@ jQuery().ready(($) => {
 
     let progressbar = wizard.find('.progressbar');
     let parts = $(progressbar).data('parts');
+
     let piece = Math.floor(100 / (parts - 1));
     let progressbartotal = 100;
     var toRemove = 0;
@@ -27,17 +28,21 @@ jQuery().ready(($) => {
         const currentStep = $(this).closest('.step');
         const nextIndex = currentStep.next();
         const selectedProduct = currentStep.find('.selected');
+        const optional = currentStep.data('optional') || false;
 
         lwh[0] = $(selectedProduct).data('product-length');
         lwh[1] = $(selectedProduct).data('product-width');
         lwh[2] = $(selectedProduct).data('product-height');
 
         if( !currentStep.hasClass('final-step') ){
-            toRemove = Math.floor(toRemove + piece);
             if( !currentStep.hasClass('already-selected') ) {
-                $(popup_msg).find('p').text('Please select a product before proceeding');
-                $(popup_msg).fadeIn(1000);
-                return;
+                if( !optional ){
+                    $(popup_msg).find('p').text('Please select a product before proceeding');
+                    $(popup_msg).fadeIn(200);
+                    return;
+                }
+            }else{
+                toRemove = Math.floor(toRemove + piece);
             }
         }
         
@@ -74,7 +79,7 @@ jQuery().ready(($) => {
 
         if( currentStep.hasClass('already-selected') ) {
             $(popup_msg).find('p').text('Please unselect a product before proceeding');
-            $(popup_msg).fadeIn(1000);
+            $(popup_msg).fadeIn(200);
             return;
         }
         
@@ -94,10 +99,10 @@ jQuery().ready(($) => {
 
 
     $(wizard).on('click', '.close-popup', function() {
-        $(popup_msg).fadeOut(1000);
+        $(popup_msg).fadeOut(200);
         setTimeout(() => {
             $(popup_msg).find('p').text('');
-        }, 1020);
+        }, 200);
     });
 
 

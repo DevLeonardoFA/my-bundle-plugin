@@ -18,6 +18,7 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 
     // all Required Files
     require_once __DIR__ . '/assets/controller/CreateDeleteProBase.php'; // Create & Delete Product Placeholder
+    require_once __DIR__ . '/assets/template-parts/product-item.php'; // Product Item
 
     // Backend
     require_once __DIR__ . '/assets/backend/class-admin.php'; // Admin Class

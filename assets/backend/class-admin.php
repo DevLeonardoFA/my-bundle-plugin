@@ -28,6 +28,7 @@ class My_Bundle_Plugin {
 
     }
 
+    // 1. CPT for Bundles
     public function my_wc_bundle_cpt() {
         
         register_post_type(
@@ -43,6 +44,10 @@ class My_Bundle_Plugin {
 
     }
 
+
+
+
+    // 2. Metabox for bundle steps, Create elements, Save metabox
     public function my_wc_bundle_metabox() {
         add_meta_box(
             'wc_bundle_steps',
@@ -52,54 +57,27 @@ class My_Bundle_Plugin {
             'normal'
         );
     }
-
     function render_bundle_steps_metabox($post) {
+
         $steps = get_post_meta($post->ID, '_wc_bundle_steps', true) ?: [];
         wp_nonce_field('wc_bundle_steps_nonce', 'wc_bundle_steps_nonce');
 
-        $rules = [
-            'NA' => 'No Rule',
-            'SizeRule' => 'Size equal or bigger'
-        ];
+        require dirname(__DIR__, 1) . '/template-parts/bundle-steps.php';
+        do_action('Load_bundle_steps' , $steps);
 
         ?>
-        <div id="bundle-steps">
-            <?php foreach ($steps as $i => $step) : ?>
-                <div class="step" data-index="<?= $i ?>">
-                    <label>Stage Title:</label>
-                    <input type="text" name="steps[<?= $i ?>][title]" value="<?= esc_attr($step['title']) ?>" placeholder="Ex: Escolha o vaso" required>
-
-                    <label>Category:</label>
-                    <select name="steps[<?= $i ?>][category]">
-                        <?php foreach (get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]) as $cat) : ?>
-                            <option value="<?= $cat->term_id ?>" <?= selected($cat->term_id, $step['category'] ?? '') ?>>
-                                <?= $cat->name ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-
-                    <label>Rules</label>
-                    <select name="steps[<?= $i ?>][rules]" value="<?= $step['rules'] ?? '' ?>">
-                        <?php foreach ($rules as $value => $label) : ?>
-                            <option value="<?= $value ?>" <?= selected($value, $step['rules'] ?? '') ?>><?= $label ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    <button type="button" class="remove-step button">Delete</button>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <button type="button" id="add-step" class="button">+ Add New Stage</button>
         <?php
     }
-
     function save_bundle_steps($post_id) {
         if (isset($_POST['steps'])) {
             update_post_meta($post_id, '_wc_bundle_steps', $_POST['steps']);
         }
     }
 
-    // Add Shortcode Column to Each Bundle
+
+
+
+    // Add Shortcode Column to Each Bundle && Add Shortcode inside the column
     function add_shortcode_column_to_bundles($columns) {
         $new_columns = [];
 
@@ -113,13 +91,15 @@ class My_Bundle_Plugin {
 
         return $new_columns;
     }
-    
-    // Add Shortcode inside the column
     function fill_shortcode_column_in_bundles($column, $post_id) {
         if ($column === 'shortcode') {
             echo '[my_wc_bundle id="' . $post_id . '"]';
         }
     }
+
+
+
+
 
     // Deactivate my plugin if WooCommerce is deactivated
     function meu_plugin_woocommerce_desativado($plugin) {
@@ -132,6 +112,9 @@ class My_Bundle_Plugin {
     }
 
 
+
+
+    // Add submenu Tutorial && Render Tutorial Page
     public function add_tutorial_submenu() {
         add_submenu_page(
             'edit.php?post_type=wc_bundle',
@@ -143,10 +126,9 @@ class My_Bundle_Plugin {
             1
         );
     }
-
     function render_tutorial_page() {
 
-        require_once __DIR__ . '/TutorialPage.php';
+        require_once dirname(__DIR__, 1) . '/TutorialPage.php';
 
         do_action('my_bundle_plugin_tutorial');
 
