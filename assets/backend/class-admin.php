@@ -39,8 +39,22 @@ class My_Bundle_Plugin {
                 'show_ui' => true,
                 'supports' => ['title'],
                 'menu_icon' => 'dashicons-cart',
+                'labels' => [
+                    'name' => __('Bundles', 'my-bundle-plugin'),
+                    'singular_name' => __('Bundle', 'my-bundle-plugin'),
+                    'add_new' => __('Add New Bundle', 'my-bundle-plugin'),
+                    'add_new_item' => __('Add New Bundle', 'my-bundle-plugin'),
+                    'edit_item' => __('Edit Bundle', 'my-bundle-plugin'),
+                    'new_item' => __('New Bundle', 'my-bundle-plugin'),
+                    'view_item' => __('View Bundle', 'my-bundle-plugin'),
+                    'search_items' => __('Search Bundles', 'my-bundle-plugin'),
+                    'not_found' => __('No bundles found', 'my-bundle-plugin'),
+                    'not_found_in_trash' => __('No bundles found in the trash', 'my-bundle-plugin')
+                ],
             ]
         );
+
+
 
     }
 

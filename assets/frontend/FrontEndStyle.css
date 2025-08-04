@@ -132,15 +132,18 @@
 }
 .wc-bundle-wizard .bundle-preview ul {
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  display: flex;
+  flex-direction: row;
   box-sizing: border-box;
 }
 .wc-bundle-wizard .bundle-preview ul img {
+  margin-right: 5px;
   width: 100px;
   height: auto;
   aspect-ratio: 1/1;
+  border: 1px solid #000000;
+  border-radius: 7px;
+  overflow: hidden;
 }
 .wc-bundle-wizard .popup_msg {
   display: none;
